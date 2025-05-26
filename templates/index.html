@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code to Flowchart & AST Generator</title>
+</head>
+<body>
+    <h2>Enter Python Code</h2>
+    <form method="POST">
+        <textarea name="code" rows="10" cols="80" required></textarea><br><br>
+        <label>Select Image Format:</label>
+        <select name="format" required>
+            <option value="png">PNG</option>
+            <option value="jpeg">JPEG</option>
+            <option value="svg">SVG</option>
+        </select><br><br>
+        <input type="submit" value="Generate">
+    </form>
+
+    {% if flowchart_url %}
+        <h3>Flowchart ({{ selected_format.upper() }})</h3>
+        <img src="{{ flowchart_url }}" alt="Flowchart" style="max-width: 100%;">
+
+        <h3>AST Diagram ({{ selected_format.upper() }})</h3>
+        <img src="{{ ast_url }}" alt="AST" style="max-width: 100%;">
+    {% endif %}
+</body>
+</html>

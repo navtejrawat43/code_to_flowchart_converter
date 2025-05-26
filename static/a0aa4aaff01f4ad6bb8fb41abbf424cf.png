@@ -1,0 +1,6 @@
+digraph {
+	"512ba580-cf7f-40c3-b650-d966df0cb989" [label="Assign: a = 10"]
+	"af5f543d-c779-4428-a9e5-fdc3375ba75b" [label="Assign: b = 24"]
+	"916c1dcb-c5ef-42f7-97bb-3d9f2f8cd9fb" [label="Assign: sum = a + b"]
+	"a0ad58e2-5a7d-42e5-9c6d-e8a64b6a17fc" [label="Expr: print(sum)"]
+}
