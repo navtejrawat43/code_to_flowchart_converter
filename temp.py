@@ -98,3 +98,14 @@ class FlowchartBuilder(ast.NodeVisitor):
         exit_node = self._add_node("Exit Loop", shape='circle')
         self._connect(cond_node, exit_node, label='False')
         self.prev_node = exit_node
+# ===== Convert Code to Flowchart Function =====
+def code_to_flowchart(code: str, filename="flowchart_output"):
+    try:
+        tree = ast.parse(code)
+        builder = FlowchartBuilder()
+        builder.visit(tree)
+        builder.graph.render(filename, format='png', view=True)
+        return True
+    except Exception as e:
+        messagebox.showerror("Error", f"Parsing failed:\n{e}")
+        return False
