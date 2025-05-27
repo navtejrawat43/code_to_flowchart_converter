@@ -1,27 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Code to Flowchart & AST Generator</title>
+    <title>Python Code to FlowChart Convertor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fz;
+        }
+        .card {
+            margin: auto;
+            max-width: 700px;
+        }
+        .btn-custom {
+            margin: 5px;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Enter Python Code</h2>
-    <form method="POST">
-        <textarea name="code" rows="10" cols="80" required></textarea><br><br>
-        <label>Select Image Format:</label>
-        <select name="format" required>
-            <option value="png">PNG</option>
-            <option value="jpeg">JPEG</option>
-            <option value="svg">SVG</option>
-        </select><br><br>
-        <input type="submit" value="Generate">
-    </form>
+    <div class="container py-4">
+        <div class="card shadow">
+            <div class="card-body text-center">
+                <h1 class="mb-4">Code to Flowchart Convertor</h1>
 
-    {% if flowchart_url %}
-        <h3>Flowchart ({{ selected_format.upper() }})</h3>
-        <img src="{{ flowchart_url }}" alt="Flowchart" style="max-width: 100%;">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
 
-        <h3>AST Diagram ({{ selected_format.upper() }})</h3>
-        <img src="{{ ast_url }}" alt="AST" style="max-width: 100%;">
-    {% endif %}
+                <form method="post">
+                    <div class="mb-3 text-start">
+                        <label class="form-label">Enter Python Code:</label>
+                        <textarea name="code" rows="8" class="form-control">{{ code }}</textarea>
+                    </div>
+
+                    <div class="mb-3 text-start">
+                        <label class="form-label">View:</label>
+                        <select name="view" class="form-select">
+                            <option value="all" {% if selected_view == 'all' %}selected{% endif %}>All</option>
+                            <option value="ast" {% if selected_view == 'ast' %}selected{% endif %}>AST Only</option>
+                            <option value="flowchart" {% if selected_view == 'flowchart' %}selected{% endif %}>Flowchart Only</option>
+                            <option value="token" {% if selected_view == 'token' %}selected{% endif %}>Tokenization Only</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark btn-lg w-100 mb-2">
+                        Generate
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {% if selected_view in ['all', 'flowchart'] and flowchart_files %}
+            <div class="card shadow my-4">
+                <div class="card-body text-center">
+                    <h3 class="section-title">Flowchart</h3>
+                    <img src="{{ flowchart_files['svg'] }}" class="img-fluid rounded mb-3" alt="Flowchart">
+                    <a class="btn btn-outline-primary btn-custom" href="{{ flowchart_files['svg'] }}" target="_blank">
+                        Download SVG
+                    </a>
+                    <a class="btn btn-outline-success btn-custom" href="{{ merged_pdf_url }}" target="_blank">
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if selected_view in ['all', 'ast'] and ast_files %}
+            <div class="card shadow my-4">
+                <div class="card-body text-center">
+                    <h3 class="section-title">AST (Abstract Syntax Tree)</h3>
+                    <img src="{{ ast_files['svg'] }}" class="img-fluid rounded mb-3" alt="AST">
+                    <a class="btn btn-outline-primary btn-custom" href="{{ ast_files['svg'] }}" target="_blank">
+                        Download SVG
+                    </a>
+                    <a class="btn btn-outline-success btn-custom" href="{{ merged_pdf_url }}" target="_blank">
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if selected_view in ['all', 'token'] and token_data %}
+            <div class="card shadow my-4">
+                <div class="card-body text-center">
+                    <h3 class="section-title">Tokenization</h3>
+                    <pre class="text-start">{{ token_data }}</pre>
+                    <a class="btn btn-outline-success btn-custom" href="{{ merged_pdf_url }}" target="_blank">
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
