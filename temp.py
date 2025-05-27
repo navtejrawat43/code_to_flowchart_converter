@@ -109,3 +109,33 @@ def code_to_flowchart(code: str, filename="flowchart_output"):
     except Exception as e:
         messagebox.showerror("Error", f"Parsing failed:\n{e}")
         return False
+# ===== GUI App =====
+def run_gui():
+    window = tk.Tk()
+    window.title("Code to Flowchart Converter")
+    window.geometry("700x500")
+
+    label = tk.Label(window, text="Enter Python Code Below:", font=("Arial", 12))
+    label.pack(pady=10)
+
+    text_area = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=80, height=20, font=("Courier", 10))
+    text_area.pack(padx=10, pady=10)
+
+    def on_generate():
+        code = text_area.get("1.0", tk.END)
+        if code.strip() == "":
+            messagebox.showwarning("Input Needed", "Please enter some Python code.")
+        else:
+            success = code_to_flowchart(code)
+            if success:
+                messagebox.showinfo("Done", "Flowchart generated successfully!")
+
+    btn = tk.Button(window, text="Generate Flowchart", command=on_generate, bg="green", fg="white", font=("Arial", 12))
+    btn.pack(pady=10)
+
+    window.mainloop()
+
+# ===== Entry Point =====
+if __name__ == "__main__":
+    run_gui()
+    
